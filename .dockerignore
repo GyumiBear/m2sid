@@ -1,0 +1,8 @@
+.git
+target/
+.mvn/
+mvnw
+mvnw.cmd
+README.md
+docs/
+config/
