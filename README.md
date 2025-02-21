@@ -14,9 +14,9 @@ Avant de commencer, assurez-vous d'avoir les outils suivants installés :
   ```bash
   java -version
   ```
-- **Maven** : Assurez-vous que Maven est également installé.
+- **Maven** : Assurez-vous que l'exécutable de Maven présent à la raçine du projet et fonctionne correctement.
   ```bash
-  mvn -v
+  ./mvnw -v
   ```
 ## Étapes de lancement
 
@@ -41,7 +41,7 @@ Utilisez Maven pour construire le projet et installer toutes les dépendances n�
 pour démarrer l'application Spring Boot directement à partir des sources, utilisez la commande suivante :
 
 ```bash
-    mvn spring-boot:run
+    docker-compose up
 ```
 
 Cela lancera l'application en chargeant le profil par défaut et toute configuration externe spécifiée.
