@@ -38,6 +38,13 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64 # pour les processeurs Intel et ARM <3
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: gyumibear/m2sid:latest
+
+      - name: Test with Docker Compose
+        run: |
+          docker-compose up -d --build
+          sleep 30 # Attendre que les services soient prêts
+          curl -s http://localhost:8080 || exit 1 # Vérifier que l'application répond
+          docker-compose down

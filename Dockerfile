@@ -4,6 +4,11 @@ FROM maven:3.8.1-jdk-11-slim AS build
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/mydatabase
+ENV SPRING_DATASOURCE_USERNAME=myuser
+ENV SPRING_DATASOURCE_PASSWORD=mypassword
+ENV SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
 # Copier les fichiers locaux dans le conteneur
 COPY . .
 
