@@ -22,7 +22,7 @@ jobs:
           distribution: temurin
 
       - name: Build and Test
-        run: mvn clean verify
+        run: mvn clean verify # test
 
       - name: Login to Docker Hub
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
