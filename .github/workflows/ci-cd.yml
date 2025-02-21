@@ -40,4 +40,4 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64 # pour les processeurs Intel et ARM <3
           push: true
-          tags: your-dockerhub-username/your-app-name:latest
+          tags: gyumibear/m2sid:latest
