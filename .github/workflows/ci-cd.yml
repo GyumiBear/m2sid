@@ -1,15 +1,12 @@
-name: Spring Boot CI/CD
+name: Spring Boot CI/CD avec un build Docker multi-platform
 
 on:
   push:
     branches:
       - main # Déclenche lorsque du code est poussé sur la branche 'main'
-  pull_request:
-    branches:
-      - main # Déclenche également pour les pull requests sur 'main'
 
 jobs:
-  build-and-test:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,18 +21,23 @@ jobs:
       - name: Build and Test
         run: mvn clean verify
 
+      - name: Set up QEMU (for cross-platform emulation)
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Login to Docker Hub
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Push Docker Image
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64 # pour les processeurs Intel et ARM <3
           push: true
-          tags: gyumibear/m2sid:latest
+          tags: your-dockerhub-username/your-app-name:latest
