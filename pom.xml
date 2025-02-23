@@ -16,12 +16,6 @@
     <properties>
         <java.version>11</java.version>
         <jacoco.version>0.8.7</jacoco.version>
-        <sonar.host.url>https://sonarqube.cedricmtta.com</sonar.host.url>
-        <sonar.projectName>My Survey</sonar.projectName>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.language>java</sonar.language>
-        <sonar.exclusions>**/MySurveyApplication.java, **/models/*.java, **/dtos/*.java</sonar.exclusions>
         <!-- Configuration de l'encodage UTF-8 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

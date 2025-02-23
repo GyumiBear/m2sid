@@ -9,9 +9,11 @@ import java.util.List;
 @Service
 public class CommentaireService {
 
-    private final CommentaireRepository repository;
-    private final SondageService sondageService;
-    private final ParticipantService participantService;
+    private final CommentaireRepository repository; // Mocker
+    private final SondageService sondageService; // Mocker
+    private final ParticipantService participantService; // Mocker
+
+    // Tests Unitaires avec toutes les dépendances d'en haut mockées
 
     public CommentaireService(CommentaireRepository repository, SondageService s, ParticipantService p) {
         this.repository = repository;
