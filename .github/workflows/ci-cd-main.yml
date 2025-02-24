@@ -36,17 +36,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Tirer l'image PostgreSQL officielle
+      # Étape pour tirer l'image officielle PostgreSQL depuis Docker Hub
       - name: Pull Official PostgreSQL Image
         run: docker pull postgres:latest
 
-      # Retaguer l'image avec votre nom d'utilisateur
-      - name: Retag PostgreSQL Image
-        run: docker tag postgres:latest gyumibear/postgresql:latest
+      # Étape pour republier l'image PostgreSQL pour AMD64
+      - name: Retag and Push PostgreSQL Image for AMD64
+        run: |
+          docker tag postgres:latest gyumibear/postgresql:amd64
+          docker push gyumibear/postgresql:amd64
 
-      # Pousser l'image retaguée vers votre répertoire DockerHub
-      - name: Push PostgreSQL Image to DockerHub
-        run: docker push gyumibear/postgresql:latest
+      # Étape pour republier l'image PostgreSQL pour ARM64
+      - name: Retag and Push PostgreSQL Image for ARM64
+        run: |
+          docker pull --platform linux/arm64 postgres:latest
+          docker tag postgres:latest gyumibear/postgresql:arm64
+          docker push gyumibear/postgresql:arm64
 
       # Construire et pousser l'image Spring Boot
       - name: Build and Push Spring Boot Application Image
