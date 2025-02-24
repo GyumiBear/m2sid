@@ -63,6 +63,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platform: linux/arm64
+          platforms: linux/arm64/v8
           push: true
           tags: gyumibear/m2sid-app:arm64
