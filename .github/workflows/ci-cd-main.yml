@@ -1,0 +1,51 @@
+# .github/workflows/ci-cd-main.yml
+
+name: CI/CD Pipeline for main Branch
+
+on:
+  pull_request:
+    branches:
+      - main # Déclenché lors d'une MR sur la branche main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Vérification du Code
+        uses: actions/checkout@v4
+
+      - name: Préparation d'un JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Création d'un JAR de l'application
+        run: mvn clean package -DskipTests
+
+      - name: Configuration de QEMU (pour l'émulation cross-platform)
+        uses: docker/setup-qemu-action@v2
+
+      - name: Préparation de Buildx Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Connexion sur DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Création et envoie de l'image de PostgreSQL sur DockerHub
+        run: |
+          docker build -t gyumibear/postgresql:latest -f Dockerfile.postgres .
+          docker push gyumibear/postgresql:latest
+
+      - name: Création et envoie de l'image de l'application Spring Boot
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: gyumibear/m2sid:latest
