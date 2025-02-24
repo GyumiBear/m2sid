@@ -31,21 +31,21 @@ jobs:
       - name: Pull Official PostgreSQL Image for AMD64
         run: docker pull --platform linux/amd64 postgres:latest
 
-      # Retaguer et pousser l'image PostgreSQL pour AMD64
+      # Retaguer et pousser l'image PostgreSQL pour AMD64 avec le bon nom
       - name: Retag and Push PostgreSQL Image for AMD64
         run: |
-          docker tag postgres:latest gyumibear/postgresql:amd64
-          docker push gyumibear/postgresql:amd64
+          docker tag postgres:latest gyumibear/m2sid-db:amd64
+          docker push gyumibear/m2sid-db:amd64
 
       # Tirer l'image officielle PostgreSQL pour ARM64
       - name: Pull Official PostgreSQL Image for ARM64
         run: docker pull --platform linux/arm64 postgres:latest
 
-      # Retaguer et pousser l'image PostgreSQL pour ARM64
+      # Retaguer et pousser l'image PostgreSQL pour ARM64 avec le bon nom
       - name: Retag and Push PostgreSQL Image for ARM64
         run: |
-          docker tag postgres:latest gyumibear/postgresql:arm64
-          docker push gyumibear/postgresql:arm64
+          docker tag postgres:latest gyumibear/m2sid-db:arm64
+          docker push gyumibear/m2sid-db:arm64
 
       # Construire et pousser l'image Spring Boot multiplateforme
       - name: Build and Push Spring Boot Application Image

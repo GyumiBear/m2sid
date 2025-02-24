@@ -2,12 +2,14 @@ version: '3'
 
 services:
   db:
-    image: gyumibear/m2sid-db:latest
+    image: gyumibear/m2sid-db:amd64 # Utilisez cette image pour AMD64
+    platform: linux/amd64          # Spécifie l'architecture AMD64
     ports:
       - "5432:5432"
 
   app:
     image: gyumibear/m2sid-app:latest
+    platform: linux/amd64          # Assurez-vous que l'application utilise également AMD64
     ports:
       - "8080:8080"
     environment:
@@ -16,3 +18,21 @@ services:
       SPRING_DATASOURCE_PASSWORD: babacar
     depends_on:
       - db
+
+  db-arm:
+    image: gyumibear/m2sid-db:arm64 # Utilisez cette image pour ARM64
+    platform: linux/arm64           # Spécifie l'architecture ARM64
+    ports:
+      - "5433:5432"                 # Utilisez un port différent pour éviter les conflits
+
+  app-arm:
+    image: gyumibear/m2sid-app:latest
+    platform: linux/arm64           # Assurez-vous que l'application utilise également ARM64
+    ports:
+      - "8081:8080"                 # Utilisez un port différent pour éviter les conflits
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-arm:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: babacar
+      SPRING_DATASOURCE_PASSWORD: babacar
+    depends_on:
+      - db-arm
