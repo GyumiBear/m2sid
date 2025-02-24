@@ -8,7 +8,7 @@ services:
       - "5432:5432"
 
   app:
-    image: gyumibear/m2sid-app:latest
+    image: gyumibear/m2sid-app:amd64
     platform: linux/amd64          # Assurez-vous que l'application utilise également AMD64
     ports:
       - "8080:8080"
@@ -26,7 +26,7 @@ services:
       - "5433:5432"                 # Utilisez un port différent pour éviter les conflits
 
   app-arm:
-    image: gyumibear/m2sid-app:latest
+    image: gyumibear/m2sid-app:arm64
     platform: linux/arm64           # Assurez-vous que l'application utilise également ARM64
     ports:
       - "8081:8080"                 # Utilisez un port différent pour éviter les conflits
