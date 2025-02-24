@@ -1,17 +1,22 @@
-version: '3'
+# docker-compose.yml
 
 services:
+  # Service pour l'architecture AMD64
   db:
-    image: gyumibear/m2sid-db:amd64 # Utilisez cette image pour AMD64
-    platform: linux/amd64          # Spécifie l'architecture AMD64
+    image: gyumibear/m2sid-db:amd64
+    platform: linux/amd64
     ports:
-      - "5432:5432"
+      - "5432:5432" # Port standard pour PostgreSQL
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: babacar
+      POSTGRES_PASSWORD: babacar
 
   app:
     image: gyumibear/m2sid-app:amd64
-    platform: linux/amd64          # Assurez-vous que l'application utilise également AMD64
+    platform: linux/amd64
     ports:
-      - "8080:8080"
+      - "8080:8080" # Port standard pour Spring Boot
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydatabase
       SPRING_DATASOURCE_USERNAME: babacar
@@ -19,17 +24,22 @@ services:
     depends_on:
       - db
 
+  # Service pour l'architecture ARM64
   db-arm:
-    image: gyumibear/m2sid-db:arm64 # Utilisez cette image pour ARM64
-    platform: linux/arm64           # Spécifie l'architecture ARM64
+    image: gyumibear/m2sid-db:arm64
+    platform: linux/arm64
     ports:
-      - "5433:5432"                 # Utilisez un port différent pour éviter les conflits
+      - "5433:5432" # Utilisez un port différent pour éviter les conflits
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: babacar
+      POSTGRES_PASSWORD: babacar
 
   app-arm:
     image: gyumibear/m2sid-app:arm64
-    platform: linux/arm64           # Assurez-vous que l'application utilise également ARM64
+    platform: linux/arm64
     ports:
-      - "8081:8080"                 # Utilisez un port différent pour éviter les conflits
+      - "8081:8080" # Utilisez un port différent pour éviter les conflits
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db-arm:5432/mydatabase
       SPRING_DATASOURCE_USERNAME: babacar
