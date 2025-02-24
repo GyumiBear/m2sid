@@ -36,10 +36,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Création et envoie de l'image de PostgreSQL sur DockerHub
+      - name: Pull de l'image officielle de PostgreSQL sur DockerHub
         run: |
-          docker pull postgres:latest
-          docker push gyumibear/postgresql:latest
+          run: docker pull postgres:latest
 
       - name: Création et envoie de l'image de l'application Spring Boot
         uses: docker/build-push-action@v3
