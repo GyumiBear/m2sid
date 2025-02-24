@@ -44,7 +44,7 @@ jobs:
       # Retaguer et pousser l'image PostgreSQL pour ARM64 avec le bon nom
       - name: Retag and Push PostgreSQL Image for ARM64
         run: |
-          docker tag postgres:latest gyumibear/m2sid-db:arm64
+          docker tag alpine:latest gyumibear/m2sid-db:arm64
           docker push gyumibear/m2sid-db:arm64
 
       # Construire et pousser l'image Spring Boot pour AMD64
