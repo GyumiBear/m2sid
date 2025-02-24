@@ -39,7 +39,7 @@ jobs:
 
       # Tirer l'image officielle PostgreSQL pour ARM64
       - name: Pull Official PostgreSQL Image for ARM64
-        run: docker pull --platform linux/arm64 postgres:latest
+        run: docker pull --platform linux/arm64 alpine:latest
 
       # Retaguer et pousser l'image PostgreSQL pour ARM64 avec le bon nom
       - name: Retag and Push PostgreSQL Image for ARM64
