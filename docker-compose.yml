@@ -24,25 +24,30 @@ services:
     depends_on:
       - db
 
-  # Service pour l'architecture ARM64
   db-arm:
     image: gyumibear/m2sid-db:arm64
     platform: linux/arm64
     ports:
-      - "5433:5432" # Utilisez un port différent pour éviter les conflits
+      - "5433:5432"
     environment:
       POSTGRES_DB: mydatabase
       POSTGRES_USER: babacar
       POSTGRES_PASSWORD: babacar
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U babacar"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app-arm:
     image: gyumibear/m2sid-app:arm64
     platform: linux/arm64
     ports:
-      - "8081:8080" # Utilisez un port différent pour éviter les conflits
+      - "8081:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db-arm:5432/mydatabase
       SPRING_DATASOURCE_USERNAME: babacar
       SPRING_DATASOURCE_PASSWORD: babacar
     depends_on:
-      - db-arm
+      db-arm:
+        condition: service_healthy
