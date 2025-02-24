@@ -36,11 +36,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Pull de l'image officielle de PostgreSQL sur DockerHub
-        run: |
-          run: docker pull postgres:latest
+      # Nouvelle étape pour tirer l'image PostgreSQL officielle
+      - name: Tirer l'image PostgreSQL officielle
+        run: docker pull postgres:latest
 
-      - name: Création et envoie de l'image de l'application Spring Boot
+      # Étape pour construire et pousser l'image Spring Boot
+      - name: Création et envoi de l'image de l'application Spring Boot
         uses: docker/build-push-action@v3
         with:
           context: .
