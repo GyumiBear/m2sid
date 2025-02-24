@@ -15,15 +15,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: temurin
-
-      - name: Build Application
-        run: mvn clean package -DskipTests
-
       - name: Set up QEMU (for cross-platform emulation)
         uses: docker/setup-qemu-action@v2
 
@@ -36,24 +27,27 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Étape pour tirer l'image officielle PostgreSQL depuis Docker Hub
-      - name: Pull Official PostgreSQL Image
-        run: docker pull postgres:latest
+      # Tirer l'image officielle PostgreSQL pour AMD64
+      - name: Pull Official PostgreSQL Image for AMD64
+        run: docker pull --platform linux/amd64 postgres:latest
 
-      # Étape pour republier l'image PostgreSQL pour AMD64
+      # Retaguer et pousser l'image PostgreSQL pour AMD64
       - name: Retag and Push PostgreSQL Image for AMD64
         run: |
           docker tag postgres:latest gyumibear/postgresql:amd64
           docker push gyumibear/postgresql:amd64
 
-      # Étape pour republier l'image PostgreSQL pour ARM64
+      # Tirer l'image officielle PostgreSQL pour ARM64
+      - name: Pull Official PostgreSQL Image for ARM64
+        run: docker pull --platform linux/arm64 postgres:latest
+
+      # Retaguer et pousser l'image PostgreSQL pour ARM64
       - name: Retag and Push PostgreSQL Image for ARM64
         run: |
-          docker pull --platform linux/arm64 postgres:latest
           docker tag postgres:latest gyumibear/postgresql:arm64
           docker push gyumibear/postgresql:arm64
 
-      # Construire et pousser l'image Spring Boot
+      # Construire et pousser l'image Spring Boot multiplateforme
       - name: Build and Push Spring Boot Application Image
         uses: docker/build-push-action@v3
         with:
