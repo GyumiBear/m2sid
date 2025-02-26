@@ -155,4 +155,34 @@ class TestParticipantDto {
             assertDoesNotThrow(nullDto::hashCode);
         }
     }
+
+    @Nested
+    @DisplayName("Tests de la méthode toString")
+    class ToStringTests {
+
+        @Test
+        @DisplayName("Devrait contenir toutes les informations")
+        void testToStringContent() {
+            String result = dto.toString();
+            assertAll(
+                    () -> assertTrue(result.contains("participantId=1")),
+                    () -> assertTrue(result.contains("nom='Dupont'")),
+                    () -> assertTrue(result.contains("prenom='Jean'"))
+            );
+        }
+
+        @Test
+        @DisplayName("Devrait gérer les string vides")
+        void testToStringWithEmptyStringValues() {
+            ParticipantDto nullDto = new ParticipantDto();
+            String result = nullDto.toString();
+            assertAll(
+                    () -> assertTrue(result.contains("participantId=")),
+                    () -> assertTrue(result.contains("nom=")),
+                    () -> assertTrue(result.contains("prenom="))
+            );
+        }
+    }
+
+
 }
