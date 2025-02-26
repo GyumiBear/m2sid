@@ -145,4 +145,46 @@ public class TestCommentaireService {
         verify(commentaireRepository, times(1)).save(any(Commentaire.class));
     }
 
+    @Test
+    @DisplayName("update() doit renvoyer null si le commentaire n'existe pas")
+    void testUpdateNonExistingCommentaire() {
+        // Appel de la méthode à tester avec un ID inexistant
+        Commentaire updatedCommentaire = new Commentaire();
+        updatedCommentaire.setCommentaireId(3L);
+        updatedCommentaire.setCommentaire("Commentaire inexistant");
+
+        Commentaire result = commentaireService.update(3L, updatedCommentaire);
+
+        // Vérifie que le résultat est null
+        assertNull(result);
+
+        // Vérifie qu'aucune interaction avec save n'a eu lieu
+        verify(commentaireRepository, never()).save(any(Commentaire.class));
+    }
+
+    @Test
+    @DisplayName("delete() doit renvoyer 1 si le commentaire existe")
+    void testDeleteExistingCommentaire() {
+        // Appel de la méthode à tester avec un ID existant
+        int result = commentaireService.delete(1L);
+
+        // Vérifie que la suppression a réussi
+        assertEquals(1, result);
+
+        // Vérifie les interactions avec les mocks
+        verify(commentaireRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("delete() doit renvoyer 0 si le commentaire n'existe pas")
+    void testDeleteNonExistingCommentaire() {
+        // Appel de la méthode à tester avec un ID inexistant
+        int result = commentaireService.delete(3L);
+
+        // Vérifie que la suppression a échoué
+        assertEquals(0, result);
+
+        // Vérifie qu'aucune interaction avec deleteById n'a eu lieu
+        verify(commentaireRepository, never()).deleteById(3L);
+    }
 }
