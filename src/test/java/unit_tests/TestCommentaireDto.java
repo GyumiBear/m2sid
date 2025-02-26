@@ -53,4 +53,42 @@ class TestCommentaireDto {
             assertEquals(200L, dto.getParticipant());
         }
     }
+
+    @Nested
+    @DisplayName("Tests de la méthode equals")
+    class EqualsTests {
+
+        @Test
+        @DisplayName("Devrait être égal à lui-même")
+        void testEqualsSameInstance() {
+            assertEquals(dto, dto);
+        }
+
+        @Test
+        @DisplayName("Devrait être égal quand toutes les propriétés sont identiques")
+        void testEqualsSameValues() {
+            assertEquals(dto, sameDto);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal à null")
+        void testEqualsNull() {
+            assertNotEquals(dto, null);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal à un objet d'une classe différente")
+        void testEqualsDifferentClass() {
+            assertNotEquals(dto, new Object());
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal quand commentaireId diffère")
+        void testEqualsDifferentCommentaireId() {
+            differentDto.setCommentaireId(2L);
+            differentDto.setCommentaire("Test comment");
+            differentDto.setParticipant(100L);
+            assertNotEquals(dto, differentDto);
+        }
+    }
 }
