@@ -159,4 +159,21 @@ class TestDateSondeeDto{
             assertDoesNotThrow(nullDto::hashCode);
         }
     }
+
+    @Test
+    @DisplayName("Test complet de tous les champs")
+    void testAllFieldsCombination() {
+        DateSondeeDto dto1 = new DateSondeeDto();
+        dto1.setDateSondeeId(1L);
+        dto1.setParticipant(100L);
+        dto1.setChoix("DISPONIBLE");
+
+        DateSondeeDto dto2 = new DateSondeeDto();
+        dto2.setDateSondeeId(1L);
+        dto2.setParticipant(100L);
+        dto2.setChoix("DISPONIBLE");
+
+        assertEquals(dto1, dto2);
+        assertEquals(dto1.hashCode(), dto2.hashCode());
+    }
 }
