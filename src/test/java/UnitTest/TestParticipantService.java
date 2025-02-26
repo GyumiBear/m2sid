@@ -17,10 +17,10 @@ import util.TestUtil;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TestParticipantService {
@@ -103,5 +103,38 @@ public class TestParticipantService {
         Participant result = participantService.create(paramParticipant);
         TestUtil.assertDto(paramParticipant, result);
         verify(repository).save(paramParticipant);
+    }
+
+    @Test
+    @DisplayName("Mise à jour réussie")
+    void testUpdate() {
+        when(repository.findById(participantId)).thenReturn(Optional.of(existingParticipant));
+        when(repository.save(updatedParticipant)).thenReturn(updatedParticipant);
+
+        Participant result = participantService.update(participantId, updatedParticipant);
+
+        TestUtil.assertDto(updatedParticipant, result);
+    }
+
+    @Test
+    @DisplayName("Suppression réussie")
+    void testDelete() {
+        when(repository.findById(participantId)).thenReturn(Optional.of(existingParticipant));
+
+        int result = participantService.delete(participantId);
+
+        assertEquals(1, result, "La suppression devrait retourner 1");
+    }
+
+    @Test
+    @DisplayName("Échec mise à jour participant inexistant")
+    void testUpdateNonExistent() {
+        when(repository.findById(participantId)).thenReturn(Optional.empty());
+
+        Participant result = participantService.update(participantId, updatedParticipant);
+
+        assertNull(result);
+        verify(repository).findById(participantId);
+        verify(repository, never()).save(any());
     }
 }
