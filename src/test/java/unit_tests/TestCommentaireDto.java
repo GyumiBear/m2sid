@@ -27,4 +27,30 @@ class TestCommentaireDto {
 
         differentDto = new CommentaireDto();
     }
+
+    @Nested
+    @DisplayName("Tests des getters/setters")
+    class GetterSetterTests {
+
+        @Test
+        @DisplayName("Devrait correctement gérer commentaireId")
+        void testCommentaireId() {
+            dto.setCommentaireId(2L);
+            assertEquals(2L, dto.getCommentaireId());
+        }
+
+        @Test
+        @DisplayName("Devrait correctement gérer le commentaire")
+        void testCommentaire() {
+            dto.setCommentaire("New comment");
+            assertEquals("New comment", dto.getCommentaire());
+        }
+
+        @Test
+        @DisplayName("Devrait correctement gérer le participant")
+        void testParticipant() {
+            dto.setParticipant(200L);
+            assertEquals(200L, dto.getParticipant());
+        }
+    }
 }
