@@ -65,4 +65,68 @@ class TestDateSondeeDto{
         }
     }
 
+    @Nested
+    @DisplayName("Tests de la méthode equals")
+    class EqualsTests {
+
+        @Test
+        @DisplayName("Devrait être égal à lui-même")
+        void testEqualsSameInstance() {
+            assertEquals(dto, dto);
+        }
+
+        @Test
+        @DisplayName("Devrait être égal avec les mêmes valeurs")
+        void testEqualsSameValues() {
+            assertEquals(dto, sameDto);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal à null")
+        void testEqualsNull() {
+            assertNotEquals(dto, null);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal à un autre type d'objet")
+        void testEqualsDifferentClass() {
+            assertNotEquals(dto, new Object());
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal si dateSondeeId différent")
+        void testEqualsDifferentDateSondeeId() {
+            differentDto.setDateSondeeId(2L);
+            differentDto.setParticipant(100L);
+            differentDto.setChoix("DISPONIBLE");
+            assertNotEquals(dto, differentDto);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal si participant différent")
+        void testEqualsDifferentParticipant() {
+            differentDto.setDateSondeeId(1L);
+            differentDto.setParticipant(200L);
+            differentDto.setChoix("DISPONIBLE");
+            assertNotEquals(dto, differentDto);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal si choix différent")
+        void testEqualsDifferentChoix() {
+            differentDto.setDateSondeeId(1L);
+            differentDto.setParticipant(100L);
+            differentDto.setChoix("INDISPONIBLE");
+            assertNotEquals(dto, differentDto);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal si un champ est null")
+        void testEqualsWithNullField() {
+            DateSondeeDto nullDto = new DateSondeeDto();
+            nullDto.setDateSondeeId(1L);
+            assertNotEquals(dto, nullDto);
+        }
+    }
+
 }
