@@ -171,4 +171,79 @@ public class TestParticipantService {
         TestUtil.assertDto(sondage, result.get(0));
     }
 
+    @Test
+    @DisplayName("Vérification getter/setter dates sondees")
+    void testDateSondeeHandling() {
+        SampleParticipant.setDateSondee(List.of(dateSondee));
+        List<DateSondee> result = SampleParticipant.getDateSondee();
+
+        assertEquals(1, result.size());
+        TestUtil.assertDto(dateSondee, result.get(0));
+    }
+
+    @Test
+    @DisplayName("Vérification égalité complète")
+    void testFullEquality() {
+        Participant p1 = createFullParticipant();
+        Participant p2 = createFullParticipant();
+
+        TestUtil.assertDto(p1, p2);
+    }
+
+    @Test
+    @DisplayName("Vérification inégalité")
+    void testInequality() {
+        Participant base = createFullParticipant();
+
+        // Test différence ID
+        Participant diffId = createFullParticipant();
+        diffId.setParticipantId(2L);
+        assertNotEquals(base, diffId);
+
+        // Test différence prénom
+        Participant diffPrenom = createFullParticipant();
+        diffPrenom.setPrenom("Jane");
+        assertNotEquals(base, diffPrenom);
+
+        // Test différence nom
+        Participant diffNom = createFullParticipant();
+        diffNom.setNom("Doe");
+        assertNotEquals(base, diffNom);
+    }
+
+    @Test
+    @DisplayName("Vérification hashcode cohérent")
+    void testHashCodeConsistency() {
+        Participant p1 = createFullParticipant();
+        Participant p2 = createFullParticipant();
+
+        assertEquals(p1.hashCode(), p2.hashCode());
+    }
+
+    @Test
+    @DisplayName("Vérification format toString")
+    void testStringRepresentation() {
+        String expected = String.format(
+                "Participant{participantId=%d, nom='%s', prenom='%s'}",
+                participantId, name, lasteName
+        );
+
+        assertEquals(expected, SampleParticipant.toString());
+    }
+
+    // Méthodes helper
+    private Participant createFullParticipant() {
+        Participant p = new Participant(participantId, name, lasteName);
+        p.setCommentaire(List.of(commentaire));
+        p.setSondages(List.of(sondage));
+        p.setDateSondee(List.of(dateSondee));
+        return p;
+    }
+
+    private void verifyInteractions() {
+        verify(repository).findById(participantId);
+        verify(repository).save(any());
+        verify(repository).deleteById(participantId);
+    }
+
 }
