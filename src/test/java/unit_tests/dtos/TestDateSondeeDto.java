@@ -129,4 +129,34 @@ class TestDateSondeeDto{
         }
     }
 
+    @Nested
+    @DisplayName("Tests de la méthode hashCode")
+    class HashCodeTests {
+
+        @Test
+        @DisplayName("Hashcode devrait être cohérent pour des objets égaux")
+        void testHashCodeConsistency() {
+            assertEquals(dto.hashCode(), sameDto.hashCode());
+        }
+
+        @Test
+        @DisplayName("Hashcode devrait être différent pour des valeurs différentes")
+        void testHashCodeDifference() {
+            assertNotEquals(dto.hashCode(), differentDto.hashCode());
+        }
+
+        @Test
+        @DisplayName("Hashcode devrait rester stable entre plusieurs appels")
+        void testHashCodeStability() {
+            int initialHash = dto.hashCode();
+            assertEquals(initialHash, dto.hashCode());
+        }
+
+        @Test
+        @DisplayName("Hashcode devrait gérer les null values")
+        void testHashCodeWithNullValues() {
+            DateSondeeDto nullDto = new DateSondeeDto();
+            assertDoesNotThrow(nullDto::hashCode);
+        }
+    }
 }
