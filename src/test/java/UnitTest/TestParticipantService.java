@@ -137,4 +137,38 @@ public class TestParticipantService {
         verify(repository).findById(participantId);
         verify(repository, never()).save(any());
     }
+
+    @Test
+    @DisplayName("Échec suppression participant inexistant")
+    void testDeleteNonExistent() {
+        when(repository.findById(participantId)).thenReturn(Optional.empty());
+
+        int result = participantService.delete(participantId);
+
+        assertEquals(0, result);
+        verify(repository).findById(participantId);
+        verify(repository, never()).deleteById(any());
+    }
+
+    // Tests des getters/setters
+    @Test
+    @DisplayName("Vérification getter/setter commentaires")
+    void testCommentaireHandling() {
+        SampleParticipant.setCommentaire(List.of(commentaire));
+        List<Commentaire> result = SampleParticipant.getCommentaire();
+
+        assertEquals(1, result.size());
+        TestUtil.assertDto(commentaire, result.get(0));
+    }
+
+    @Test
+    @DisplayName("Vérification getter/setter sondages")
+    void testSondageHandling() {
+        SampleParticipant.setSondages(List.of(sondage));
+        List<Sondage> result = SampleParticipant.getSondages();
+
+        assertEquals(1, result.size());
+        TestUtil.assertDto(sondage, result.get(0));
+    }
+
 }
