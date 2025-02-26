@@ -71,9 +71,7 @@ public class TestParticipantService {
     @DisplayName("récupére par ID")
     void testGetById() {
         when(repository.getById(participantId)).thenReturn(SampleParticipant); // Mock de getById()
-
         Participant result = participantService.getById(participantId);
-
         assertNotNull(result, "Le participant devrait être récupéré");
         TestUtil.assertDto(SampleParticipant, result);
         verify(repository).getById(participantId); // Vérification de l'appel à getById()
@@ -83,11 +81,27 @@ public class TestParticipantService {
     @DisplayName("Récupération de tous les participants")
     void testGetAll() {
         when(repository.findAll()).thenReturn(participantList);
-
         List<Participant> result = participantService.getAll();
-
         TestUtil.assertDtoListSize(participantList, result);
         verify(repository).findAll();
     }
 
+    @Test
+    @DisplayName("Création basique")
+    void testCreate() {
+        when(repository.save(participantToCreate)).thenReturn(SampleParticipant);
+        Participant result = participantService.create(participantToCreate);
+        TestUtil.assertDto(SampleParticipant, result);
+        verify(repository).save(participantToCreate);
+    }
+
+    @Test
+    @DisplayName("Création avec paramètres")
+    void testCreateWithParameters() {
+        Participant paramParticipant = new Participant(participantId, name, lasteName);
+        when(repository.save(paramParticipant)).thenReturn(paramParticipant);
+        Participant result = participantService.create(paramParticipant);
+        TestUtil.assertDto(paramParticipant, result);
+        verify(repository).save(paramParticipant);
+    }
 }
