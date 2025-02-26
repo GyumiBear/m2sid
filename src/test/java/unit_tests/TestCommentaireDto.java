@@ -91,4 +91,40 @@ class TestCommentaireDto {
             assertNotEquals(dto, differentDto);
         }
     }
+
+    @Nested
+    @DisplayName("Tests de la méthode hashCode")
+    class HashCodeTests {
+
+        @Test
+        @DisplayName("Devrait avoir le même hashcode pour des instances égales")
+        void testHashCodeConsistency() {
+            assertEquals(dto.hashCode(), sameDto.hashCode());
+        }
+
+        @Test
+        @DisplayName("Devrait avoir des hashcodes différents quand les propriétés diffèrent")
+        void testHashCodeDifference() {
+            assertNotEquals(dto.hashCode(), differentDto.hashCode());
+        }
+
+        @Test
+        @DisplayName("Hashcode devrait être cohérent entre plusieurs appels")
+        void testHashCodeSameInstance() {
+            int initialHashCode = dto.hashCode();
+            assertEquals(initialHashCode, dto.hashCode());
+        }
+    }
+
+    @Test
+    @DisplayName("Test de la cohérence entre equals et hashCode")
+    void testEqualsAndHashCodeConsistency() {
+        // Si deux objets sont égaux, leurs hashcodes doivent être égaux
+        assertTrue(dto.equals(sameDto));
+        assertEquals(dto.hashCode(), sameDto.hashCode());
+
+        // Si deux objets ne sont pas égaux, leurs hashcodes devraient idéalement être différents
+        assertFalse(dto.equals(differentDto));
+        assertNotEquals(dto.hashCode(), differentDto.hashCode());
+    }
 }
