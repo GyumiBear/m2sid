@@ -68,4 +68,60 @@ class TestParticipantDto {
             );
         }
     }
+
+    @Nested
+    @DisplayName("Tests de la méthode equals")
+    class EqualsTests {
+
+        @Test
+        @DisplayName("Devrait être égal à lui-même")
+        void testEqualsSameInstance() {
+            assertEquals(dto, dto);
+        }
+
+        @Test
+        @DisplayName("Devrait être égal avec les mêmes valeurs")
+        void testEqualsSameValues() {
+            assertEquals(dto, sameDto);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal à null")
+        void testEqualsNull() {
+            assertNotEquals(dto, null);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal à un autre type d'objet")
+        void testEqualsDifferentClass() {
+            assertNotEquals(dto, new Object());
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal si participantId différent")
+        void testEqualsDifferentParticipantId() {
+            differentDto.setParticipantId(2L);
+            differentDto.setNom("Dupont");
+            differentDto.setPrenom("Jean");
+            assertNotEquals(dto, differentDto);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal si nom différent")
+        void testEqualsDifferentNom() {
+            differentDto.setParticipantId(1L);
+            differentDto.setNom("Durand");
+            differentDto.setPrenom("Jean");
+            assertNotEquals(dto, differentDto);
+        }
+
+        @Test
+        @DisplayName("Ne devrait pas être égal si prénom différent")
+        void testEqualsDifferentPrenom() {
+            differentDto.setParticipantId(1L);
+            differentDto.setNom("Dupont");
+            differentDto.setPrenom("Paul");
+            assertNotEquals(dto, differentDto);
+        }
+    }
 }
