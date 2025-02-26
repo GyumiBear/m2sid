@@ -7,13 +7,20 @@ import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.models.Sondage;
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.repositories.ParticipantRepository;
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.services.ParticipantService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import util.TestUtil;
 
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class TestParticipantService {
@@ -58,6 +65,29 @@ public class TestParticipantService {
 
         // Listes mockées de participants
         participantList = Collections.singletonList(SampleParticipant);
+    }
+
+    @Test
+    @DisplayName("récupére par ID")
+    void testGetById() {
+        when(repository.getById(participantId)).thenReturn(SampleParticipant); // Mock de getById()
+
+        Participant result = participantService.getById(participantId);
+
+        assertNotNull(result, "Le participant devrait être récupéré");
+        TestUtil.assertDto(SampleParticipant, result);
+        verify(repository).getById(participantId); // Vérification de l'appel à getById()
+    }
+
+    @Test
+    @DisplayName("Récupération de tous les participants")
+    void testGetAll() {
+        when(repository.findAll()).thenReturn(participantList);
+
+        List<Participant> result = participantService.getAll();
+
+        TestUtil.assertDtoListSize(participantList, result);
+        verify(repository).findAll();
     }
 
 }
