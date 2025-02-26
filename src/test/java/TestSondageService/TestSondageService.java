@@ -14,15 +14,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import util.TestUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TestSondageService {
@@ -121,4 +118,61 @@ public class TestSondageService {
         assertEquals(sampleParticipant, result.getCreateBy());
     }
 
+    @Test
+    @DisplayName("Mise à jour réussie")
+    void testUpdate() {
+        when(repository.findById(sondageId)).thenReturn(Optional.of(sampleSondage));
+        when(repository.save(updatedSondage)).thenReturn(updatedSondage);
+
+        Sondage result = sondageService.update(sondageId, updatedSondage);
+
+        TestUtil.assertDto(updatedSondage, result);
+        verifyUpdateInteractions();
+    }
+
+    @Test
+    @DisplayName("Échec mise à jour sondage inexistant")
+    void testUpdateNonExistent() {
+        when(repository.findById(sondageId)).thenReturn(Optional.empty());
+
+        Sondage result = sondageService.update(sondageId, updatedSondage);
+
+        assertNull(result);
+        verify(repository).findById(sondageId);
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Suppression réussie")
+    void testDelete() {
+        when(repository.findById(sondageId)).thenReturn(Optional.of(sampleSondage));
+
+        int result = sondageService.delete(sondageId);
+
+        assertEquals(1, result);
+        verifyDeleteInteractions();
+    }
+
+    @Test
+    @DisplayName("Échec suppression sondage inexistant")
+    void testDeleteNonExistent() {
+        when(repository.findById(sondageId)).thenReturn(Optional.empty());
+
+        int result = sondageService.delete(sondageId);
+
+        assertEquals(0, result);
+        verify(repository).findById(sondageId);
+        verify(repository, never()).deleteById(any());
+    }
+
+    // Méthodes helper
+    private void verifyUpdateInteractions() {
+        verify(repository).findById(sondageId);
+        verify(repository).save(updatedSondage);
+    }
+
+    private void verifyDeleteInteractions() {
+        verify(repository).findById(sondageId);
+        verify(repository).deleteById(sondageId);
+    }
 }
