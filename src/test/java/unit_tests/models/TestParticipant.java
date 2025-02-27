@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestParticipant {
     private Participant participant;
@@ -49,5 +48,18 @@ public class TestParticipant {
         );
     }
 
+    @Test
+    @DisplayName("Test du constructeur paramétré")
+    void testParameterizedConstructor() {
+        Participant p = new Participant(participantId, nom, prenom);
 
+        assertAll("Vérification du constructeur",
+                () -> assertEquals(participantId, p.getParticipantId()),
+                () -> assertEquals(nom, p.getNom()),
+                () -> assertEquals(prenom, p.getPrenom()),
+                () -> assertTrue(p.getCommentaire().isEmpty()),
+                () -> assertTrue(p.getSondages().isEmpty()),
+                () -> assertTrue(p.getDateSondee().isEmpty())
+        );
+    }
 }
