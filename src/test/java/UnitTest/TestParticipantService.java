@@ -225,12 +225,11 @@ public class TestParticipantService {
     void testStringRepresentation() {
         String expected = String.format(
                 "Participant{participantId=%d, nom='%s', prenom='%s'}",
-                participantId, name, lasteName
+                participantId, lasteName, name // Inverser ici
         );
 
         assertEquals(expected, SampleParticipant.toString());
     }
-
     // Méthodes helper
     private Participant createFullParticipant() {
         Participant p = new Participant(participantId, name, lasteName);
