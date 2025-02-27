@@ -62,4 +62,15 @@ public class TestParticipant {
                 () -> assertTrue(p.getDateSondee().isEmpty())
         );
     }
+
+    @Test
+    @DisplayName("Test de la relation avec Sondage (createBy)")
+    void testSondageRelationship() {
+        participant.getSondages().add(sondageMock);
+
+        assertAll("Vérification de la relation Sondage",
+                () -> assertEquals(1, participant.getSondages().size()),
+                () -> assertSame(sondageMock, participant.getSondages().get(0))
+        );
+    }
 }
