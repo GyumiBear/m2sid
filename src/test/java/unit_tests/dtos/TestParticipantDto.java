@@ -184,5 +184,17 @@ class TestParticipantDto {
         }
     }
 
+    @Test
+    @DisplayName("Cohérence entre equals() et hashCode()")
+    void testEqualsAndHashCodeConsistency() {
+        // Mêmes valeurs -> même hashcode
+        assertEquals(dto, sameDto);
+        assertEquals(dto.hashCode(), sameDto.hashCode());
+
+        // Valeurs différentes -> hashcode différent
+        differentDto.setParticipantId(2L);
+        assertNotEquals(dto, differentDto);
+        assertNotEquals(dto.hashCode(), differentDto.hashCode());
+    }
 
 }
