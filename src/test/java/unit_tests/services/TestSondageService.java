@@ -1,4 +1,4 @@
-package TestSondageService;
+package unit_tests.services;
 
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.models.Participant;
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.models.Sondage;

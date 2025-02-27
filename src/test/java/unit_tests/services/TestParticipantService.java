@@ -1,4 +1,4 @@
-package UnitTest;
+package unit_tests.services;
 
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.models.Commentaire;
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.models.DateSondee;

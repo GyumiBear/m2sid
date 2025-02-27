@@ -1,4 +1,4 @@
-package unit_tests.dto;
+package unit_tests.dtos;
 
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.dtos.DateSondageDto;
 import org.junit.jupiter.api.BeforeEach;
