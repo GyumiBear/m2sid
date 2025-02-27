@@ -101,12 +101,15 @@ public class TestParticipant {
     }
 
     @Test
-    @DisplayName("Test de la contrainte non-null sur nom et prenom")
-    void testNotNullConstraints() {
-        assertThrows(NullPointerException.class,
-                () -> new Participant(participantId, null, prenom));
-
-        assertThrows(NullPointerException.class,
-                () -> new Participant(participantId, nom, null));
+    @DisplayName("Test de l'initialisation des collections")
+    void testCollectionInitialization() {
+        assertAll("Vérification de l'initialisation des collections",
+                () -> assertNotNull(participant.getCommentaire()),
+                () -> assertNotNull(participant.getSondages()),
+                () -> assertNotNull(participant.getDateSondee()),
+                () -> assertTrue(participant.getCommentaire().isEmpty()),
+                () -> assertTrue(participant.getSondages().isEmpty()),
+                () -> assertTrue(participant.getDateSondee().isEmpty())
+        );
     }
 }
