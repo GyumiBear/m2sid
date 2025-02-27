@@ -73,4 +73,17 @@ public class TestParticipant {
                 () -> assertSame(sondageMock, participant.getSondages().get(0))
         );
     }
+
+    @Test
+    @DisplayName("Test de la relation avec DateSondee")
+    void testDateSondeeRelationship() {
+        participant.getDateSondee().add(dateSondeeMock);
+
+        assertAll("Vérification de la relation DateSondee",
+                () -> assertEquals(1, participant.getDateSondee().size()),
+                () -> assertSame(dateSondeeMock, participant.getDateSondee().get(0))
+        );
+    }
+
+
 }
