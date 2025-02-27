@@ -85,5 +85,28 @@ public class TestParticipant {
         );
     }
 
+    @Test
+    @DisplayName("Test de la représentation textuelle")
+    void testToString() {
+        participant.setParticipantId(participantId);
+        participant.setNom(nom);
+        participant.setPrenom(prenom);
 
+        String expected = String.format(
+                "Participant{participantId=%d, nom='%s', prenom='%s'}",
+                participantId, nom, prenom
+        );
+
+        assertEquals(expected, participant.toString());
+    }
+
+    @Test
+    @DisplayName("Test de la contrainte non-null sur nom et prenom")
+    void testNotNullConstraints() {
+        assertThrows(NullPointerException.class,
+                () -> new Participant(participantId, null, prenom));
+
+        assertThrows(NullPointerException.class,
+                () -> new Participant(participantId, nom, null));
+    }
 }
