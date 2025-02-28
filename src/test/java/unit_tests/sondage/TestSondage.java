@@ -97,4 +97,14 @@ class TestSondage {
         );
     }
 
+    @Test
+    @DisplayName("Test de la relation avec DateSondage")
+    void testDateSondageRelationship() {
+        sondage.getDateSondage().add(dateSondageMock);
+
+        assertAll("Vérification de la relation DateSondage",
+                () -> assertEquals(1, sondage.getDateSondage().size()),
+                () -> assertSame(dateSondageMock, sondage.getDateSondage().get(0))
+        );
+    }
 }
