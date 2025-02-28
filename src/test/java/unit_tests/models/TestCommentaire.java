@@ -1,4 +1,4 @@
-package unit_tests.model;
+package unit_tests.models;
 
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.models.Commentaire;
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.models.Participant;
