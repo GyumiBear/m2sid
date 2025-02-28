@@ -85,4 +85,16 @@ class TestSondage {
                 () -> assertSame(participantMock, s.getCreateBy())
         );
     }
+
+    @Test
+    @DisplayName("Test de la relation avec Commentaire")
+    void testCommentaireRelationship() {
+        sondage.getCommentaires().add(commentaireMock);
+
+        assertAll("Vérification de la relation Commentaire",
+                () -> assertEquals(1, sondage.getCommentaires().size()),
+                () -> assertSame(commentaireMock, sondage.getCommentaires().get(0))
+        );
+    }
+
 }
