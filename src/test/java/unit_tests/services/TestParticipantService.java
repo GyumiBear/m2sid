@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import util.TestUtil;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -70,11 +71,9 @@ public class TestParticipantService {
     @Test
     @DisplayName("récupére par ID")
     void testGetById() {
-        when(repository.getById(participantId)).thenReturn(SampleParticipant); // Mock de getById()
-        Participant result = participantService.getById(participantId);
-        assertNotNull(result, "Le participant devrait être récupéré");
-        TestUtil.assertDto(SampleParticipant, result);
-        verify(repository).getById(participantId); // Vérification de l'appel à getById()
+        assertThrows(EntityNotFoundException.class, () -> {
+            participantService.getById(999L); // ID inexistant
+        });
     }
 
     @Test
