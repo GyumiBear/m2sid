@@ -18,12 +18,12 @@ class TestCommentaireDto {
         dto = new CommentaireDto();
         dto.setCommentaireId(1L);
         dto.setCommentaire("Test comment");
-        dto.setParticipant(100L);
+        dto.setParticipantId(100L);
 
         sameDto = new CommentaireDto();
         sameDto.setCommentaireId(1L);
         sameDto.setCommentaire("Test comment");
-        sameDto.setParticipant(100L);
+        sameDto.setParticipantId(100L);
 
         differentDto = new CommentaireDto();
     }
@@ -49,8 +49,8 @@ class TestCommentaireDto {
         @Test
         @DisplayName("Devrait correctement gérer le participant")
         void testParticipant() {
-            dto.setParticipant(200L);
-            assertEquals(200L, dto.getParticipant());
+            dto.setParticipantId(200L);
+            assertEquals(200L, dto.getParticipantId());
         }
     }
 
@@ -87,7 +87,7 @@ class TestCommentaireDto {
         void testEqualsDifferentCommentaireId() {
             differentDto.setCommentaireId(2L);
             differentDto.setCommentaire("Test comment");
-            differentDto.setParticipant(100L);
+            differentDto.setParticipantId(100L);
             assertNotEquals(dto, differentDto);
         }
     }

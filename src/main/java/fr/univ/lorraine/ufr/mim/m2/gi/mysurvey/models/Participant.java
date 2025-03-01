@@ -31,6 +31,10 @@ public class Participant {
 
     public Participant() {}
 
+    public Participant(Long participantId) {
+        this.participantId = participantId;
+    }
+
     public Participant(Long participantId, String nom, String prenom) {
         this.participantId = participantId;
         this.nom = nom;

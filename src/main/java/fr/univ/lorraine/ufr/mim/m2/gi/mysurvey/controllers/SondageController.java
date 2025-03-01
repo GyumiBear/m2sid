@@ -103,7 +103,7 @@ public class SondageController {
     @ResponseBody
     public CommentaireDto createCommantaire(@PathVariable("id") Long id, @RequestBody CommentaireDto commantaireDto) {
         var model = mapper.map(commantaireDto, Commentaire.class);
-        var result = scommentaire.addCommantaire(id, commantaireDto.getParticipant(), model);
+        var result = scommentaire.addCommantaire(id, commantaireDto.getParticipantId(), model);
         return mapper.map(result, CommentaireDto.class);
     }
 
