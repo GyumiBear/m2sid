@@ -51,6 +51,10 @@ public class ModelMapperConfig {
         mapper.createTypeMap(Sondage.class, SondageDto.class).addMappings(
                 m -> m.map(src -> src.getCreateBy().getParticipantId(), SondageDto::setCreateBy)
         );
+        // Dans une classe de configuration ou au démarrage
+        mapper.typeMap(SondageDto.class, Sondage.class).addMappings(m -> {
+            m.skip(Sondage::setCreateBy); // Ignorer createBy lors du mapping
+        });
         mapper.typeMap(DateSondeeDto.class, DateSondee.class).addMappings(
                 m -> m.map(DateSondeeDto::getChoix, DateSondee::setChoix)
         );
