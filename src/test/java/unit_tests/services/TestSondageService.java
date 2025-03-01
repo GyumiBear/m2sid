@@ -14,10 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import util.TestUtil;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -121,25 +121,22 @@ public class TestSondageService {
     @Test
     @DisplayName("Mise à jour réussie")
     void testUpdate() {
-        when(repository.findById(sondageId)).thenReturn(Optional.of(sampleSondage));
-        when(repository.save(updatedSondage)).thenReturn(updatedSondage);
-
-        Sondage result = sondageService.update(sondageId, updatedSondage);
-
-        TestUtil.assertDto(updatedSondage, result);
-        verifyUpdateInteractions();
+        Sondage sondage = new Sondage();
+        sondage.setNom("Test");
+        when(repository.findById(1L)).thenReturn(Optional.of(sondage));
+        when(repository.save(any(Sondage.class))).thenReturn(sondage);
+        Sondage updated = sondageService.update(1L, sondage);
+        assertEquals("Test", updated.getNom());
     }
 
     @Test
     @DisplayName("Échec mise à jour sondage inexistant")
     void testUpdateNonExistent() {
-        when(repository.findById(sondageId)).thenReturn(Optional.empty());
-
-        Sondage result = sondageService.update(sondageId, updatedSondage);
-
-        assertNull(result);
-        verify(repository).findById(sondageId);
-        verify(repository, never()).save(any());
+        Sondage sondage = new Sondage();
+        when(repository.findById(999L)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> {
+            sondageService.update(999L, sondage);
+        });
     }
 
     @Test

@@ -12,8 +12,10 @@ import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.services.DateSondeeService;
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.services.SondageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +36,12 @@ public class SondageController {
         this.sdate = d;
         this.scommentaire = c;
         this.request = r;
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleEntityNotFound(EntityNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/{id}")
@@ -119,8 +127,15 @@ public class SondageController {
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SondageDto update(@PathVariable("id") Long id, @RequestBody SondageDto sondageDto) {
-        var model = mapper.map(sondageDto, Sondage.class);
-        var result = service.update(id, model);
+        // Récupérer le sondage existant
+        Sondage existingSondage = service.getById(id);
+        // Mettre à jour uniquement les champs nécessaires
+        existingSondage.setNom(sondageDto.getNom());
+        existingSondage.setDescription(sondageDto.getDescription());
+        existingSondage.setCloture(sondageDto.getCloture());
+        existingSondage.setFin(sondageDto.getFin());
+        // Ne pas toucher à createBy, il reste l'entité persistée
+        var result = service.update(id, existingSondage);
         return mapper.map(result, SondageDto.class);
     }
 
