@@ -18,16 +18,24 @@ public class ModelMapperConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-
         var mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        mapper.createTypeMap(CommentaireDto.class, Commentaire.class).addMappings(
-                m -> m.skip(Commentaire::setParticipant)
-        );
-        mapper.createTypeMap(Commentaire.class, CommentaireDto.class).addMappings(
-                m -> m.map(src -> src.getParticipant().getParticipantId(), CommentaireDto::setParticipant)
-        );
+        // Mapping CommentaireDto -> Commentaire (fusionné)
+        mapper.createTypeMap(CommentaireDto.class, Commentaire.class).addMappings(m -> {
+            m.skip(Commentaire::setParticipant); // Mapping existant
+            m.map(CommentaireDto::getSondageId, (dest, v) -> dest.setSondage(new Sondage((Long) v))); // Nouveau mapping
+            m.map(CommentaireDto::getParticipantId, (dest, v) -> dest.setParticipant(new Participant((Long) v))); // Nouveau mapping
+        });
+
+        // Mapping Commentaire -> CommentaireDto (fusionné)
+        mapper.createTypeMap(Commentaire.class, CommentaireDto.class).addMappings(m -> {
+            m.map(src -> src.getParticipant().getParticipantId(), CommentaireDto::setParticipantId); // Mapping existant corrigé
+            m.map(src -> src.getSondage().getSondageId(), CommentaireDto::setSondageId); // Nouveau mapping
+            // Supprimez cette ligne si elle est redondante : m.map(src -> src.getParticipant().getParticipantId(), CommentaireDto::setParticipantId);
+        });
+
+        // Autres mappings existants
         mapper.createTypeMap(DateSondeeDto.class, DateSondee.class).addMappings(
                 m -> m.skip(DateSondee::setParticipant)
         );
