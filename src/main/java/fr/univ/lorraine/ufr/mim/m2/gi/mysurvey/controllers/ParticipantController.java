@@ -6,6 +6,7 @@ import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.services.ParticipantService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class ParticipantController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ParticipantDto get(@PathVariable("id") Long id) {
-        var model = service.getById(id);
+        var model = service.getById(id); // Lève EntityNotFoundException si non trouvé
         return mapper.map(model, ParticipantDto.class);
     }
 

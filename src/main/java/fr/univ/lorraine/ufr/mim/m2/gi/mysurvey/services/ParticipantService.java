@@ -4,6 +4,7 @@ import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.models.Participant;
 import fr.univ.lorraine.ufr.mim.m2.gi.mysurvey.repositories.ParticipantRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -15,7 +16,8 @@ public class ParticipantService {
     }
 
     public Participant getById(Long id) {
-        return repository.getById(id);
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Participant not found with id: " + id));
     }
 
     public List<Participant> getAll() {
